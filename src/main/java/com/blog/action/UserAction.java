@@ -6,6 +6,7 @@ import com.blog.service.UserService;
 import com.opensymphony.xwork2.ActionSupport;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -33,14 +36,18 @@ public class UserAction extends ActionSupport {
     private String password_repeat;
 
     // 文章相关
+    private Essay essay;
     private String title;
     private String content;
     private String essayId;
 
+    private File picture;
+    private String pictureFileName;
+    private String path;
+
     // - 标签专用 -
     private List<Essay> essayList;
     private List<Essay> starList;
-
     private String keyword;
 
     // 登录
@@ -78,7 +85,7 @@ public class UserAction extends ActionSupport {
     }
 
     // 添加文章
-    public String produce() {
+    public String produce() throws Exception {
         // 获取时间戳
         Timestamp ts = new Timestamp(new Date().getTime());
 
@@ -87,19 +94,29 @@ public class UserAction extends ActionSupport {
         HttpSession session = request.getSession();
         String n = (String) session.getAttribute("Username");
 
-        if (userService.produce("essay" + ts.getTime(), title, content, ts, n)) return SUCCESS;
-        return ERROR;
+        try {
+            if (picture != null) {
+                path = ServletActionContext.getServletContext().getRealPath("/uploads");
+                File dest = new File(path, pictureFileName.replace('\\', File.separatorChar));
+                FileUtils.copyFile(picture, dest);
+            }
+        } catch (IOException e) {
+            // 图片保存失败，记录错误日志或其他处理
+            e.printStackTrace();
+        }
+
+        // 继续执行后续代码
+        if (userService.produce("essay" + ts.getTime(), title, content, ts, n, pictureFileName)) {
+            return SUCCESS;
+        } else {
+            return ERROR;
+        }
     }
 
     // 查看文章列表
     public String list() {
         essayList = userService.getEssays();
-        return SUCCESS;
-    }
-
-    // 查看收藏列表
-    public String stars() {
-        starList = userService.getAllStars();
+        path = ServletActionContext.getServletContext().getRealPath("/uploads");
         return SUCCESS;
     }
 
@@ -121,23 +138,35 @@ public class UserAction extends ActionSupport {
         return SUCCESS;
     }
 
-    /*=====================
-     *  非Action
-    =======================*/
-    // 判断是否收藏文章
-    public boolean ifStar(String essayId) {
-        return userService.ifStar(essayId);
-    }
-
-    // 获取所有收藏文章的ID
-    public List getAllStars() {
-        System.out.println("23333");
-        return userService.getAllStars();
-    }
-
     public String search() {
-        // 调用Service层进行关键词搜索
         essayList = userService.search(keyword);
         return SUCCESS;
     }
+
+    // 更新文章
+    public String editEssay() {
+        HttpServletRequest request = ServletActionContext.getRequest();
+        essayId = request.getParameter("essayId");
+        essay = userService.getEssayById(essayId);
+        if (essay != null) return SUCCESS;
+        else return ERROR;
+    }
+
+    public String updateEssay() {
+        HttpServletRequest request = ServletActionContext.getRequest();
+        essayId = request.getParameter("essayId");
+        title = request.getParameter("title");
+        content = request.getParameter("content");
+        if (picture == null || pictureFileName == null) {
+            userService.updateEssay(essayId, title, content);
+        }else{
+            userService.updateEssay(essayId, title, content, pictureFileName);
+        }
+        return SUCCESS;
+    }
+
+    public boolean ifStar(String essayID) {
+        return userService.ifStar(essayID);
+    }
+
 }

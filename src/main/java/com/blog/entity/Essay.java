@@ -15,6 +15,8 @@ public class Essay {
     private Timestamp time;
     private String author;
 
+    private String picture;
+
     @Id
     @Column(name = "essayID", nullable = false, length = 45)
     public String getEssayId() {
@@ -65,6 +67,17 @@ public class Essay {
         this.author = author;
     }
 
+    @Basic
+    @Column(name = "picture", nullable = false, length = 45)
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -74,11 +87,12 @@ public class Essay {
                 Objects.equals(title, essay.title) &&
                 Objects.equals(content, essay.content) &&
                 Objects.equals(time, essay.time) &&
-                Objects.equals(author, essay.author);
+                Objects.equals(author, essay.author) &&
+                Objects.equals(picture, essay.picture);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(essayId, title, content, time, author);
+        return Objects.hash(essayId, title, content, time, author, picture);
     }
 }

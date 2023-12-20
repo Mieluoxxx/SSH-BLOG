@@ -20,5 +20,8 @@
         <property name="author">
             <column name="author" sql-type="varchar(45)" length="45"/>
         </property>
+        <property name="picture">
+            <column name="picture" sql-type="varchar(45)" length="45"/>
+        </property>
     </class>
 </hibernate-mapping>

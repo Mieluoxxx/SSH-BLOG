@@ -1,3 +1,5 @@
+<%@ page import="com.opensymphony.xwork2.ActionContext" %>
+<%@ page import="java.io.File" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <html>
@@ -11,12 +13,12 @@
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
-            <form action="produce.action" method="post" enctype="multipart/form-data">
-                <div class="form-group mt-1 mb-2">
-                    <input id="title" name="title" class="form-control" type="text" placeholder="文章标题">
+            <form action="update.action?essayId=<s:property value='essay.essayId'/>" method="post">
+                <div class="form-group">
+                    <input id="title" name="title" class="form-control" type="text" placeholder="文章标题" value="<s:property value='essay.title'/>">
                 </div>
-                <div class="form-group mb-3">
-                    <textarea rows="15" style="resize:none" id="content" name="content" class="form-control" placeholder="正文内容..." style="height: 50%"></textarea>
+                <div class="form-group">
+                    <textarea rows="15" style="resize:none; height: 50%" id="content" name="content" class="form-control"><s:property value='essay.content'/></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="picture" class="form-label">选择照片</label>

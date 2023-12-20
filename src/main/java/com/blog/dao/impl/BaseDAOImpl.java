@@ -1,6 +1,7 @@
 package com.blog.dao.impl;
 
 import com.blog.dao.BaseDAO;
+import com.blog.entity.Essay;
 import org.hibernate.FlushMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -64,13 +65,6 @@ public class BaseDAOImpl implements BaseDAO {
     @Override
     public List find(Object o) {
         return this.getHt().findByExample(o);
-    }
-
-    @Override
-    public List getAllEssays() {
-        // 使用 HQL 查询，并按时间字段排序，时间近的在前面
-        String hql = "FROM Essay e ORDER BY e.time DESC";
-        return this.getHt().find(hql);
     }
 
     @Override

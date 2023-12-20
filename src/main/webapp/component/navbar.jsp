@@ -12,20 +12,20 @@
                     <a class="nav-link active" href="index.jsp">主页</a>
                 </li>
                 <li class="nav-item">
-                    <s:a action="list" class="nav-link">Article</s:a>
+                    <s:a action="list" class="nav-link">浏览文章</s:a>
                 </li>
                 <s:if test="#session.Username!=null">
-                    <a class="nav-link" href="writing.jsp">Writing</a>
+                    <a class="nav-link" href="writing.jsp">撰写文章</a>
                 </s:if>
             </ul>
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <s:if test="#session.Username==null">
                     <li class="nav-item">
-                        <a class="nav-link" href="login.jsp">Login</a>
+                        <a class="nav-link" href="login.jsp">登录</a>
                     </li>
                 </s:if>
                 <s:else>
-                    <a class="nav-link" href="logout.action">logout</a>
+                    <a class="nav-link" href="logout.action">注销</a>
                     <a class="nav-link" href="#"><s:property value="#session.Username" /></a>
                 </s:else>
             </ul>

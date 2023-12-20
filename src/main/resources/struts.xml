@@ -63,5 +63,15 @@
         <action name="search" class="com.blog.action.UserAction" method="search">
             <result name="success">/result.jsp</result>
         </action>
+
+        <action name="edit" class="com.blog.action.UserAction" method="editEssay">
+            <result name="success">/edit.jsp</result>
+        </action>
+
+        <action name="update" class="com.blog.action.UserAction" method="updateEssay">
+            <result name="success">/essays.jsp</result>
+            <result name="notfound">/errors/404.jsp</result>
+        </action>
+
     </package>
 </struts>

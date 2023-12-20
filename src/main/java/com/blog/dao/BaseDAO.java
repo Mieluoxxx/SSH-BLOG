@@ -1,5 +1,7 @@
 package com.blog.dao;
 
+import com.blog.entity.Essay;
+
 import java.util.List;
 
 public interface BaseDAO {
@@ -13,8 +15,6 @@ public interface BaseDAO {
     List find(Object o);
 
     List findByHQL(String queryStr);
-
-    List getAllEssays();
 
     List search(String keyword);
 }
