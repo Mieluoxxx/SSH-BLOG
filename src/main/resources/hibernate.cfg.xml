@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.url">jdbc:mysql://localhost:3306/blog?serverTimezone=UTC</property>
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+
+        <mapping class="com.blog.entity.User"/>
+        <mapping resource="mappers/User.hbm.xml"/>
+        <mapping class="com.blog.entity.Essay"/>
+        <mapping resource="mappers/Essay.hbm.xml"/>
+        <mapping class="com.blog.entity.Userstar"/>
+        <mapping resource="mappers/Userstar.hbm.xml"/>
+
+        <!-- DB schema will be updated if needed -->
+        <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
+    </session-factory>
+</hibernate-configuration>
